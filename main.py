@@ -114,10 +114,16 @@ def main():
         cols_by_units[unit].append(name)
 
     # draw
+    plotcount = len(cols_by_units.keys())
     values_x = df['Timestamps']
-    fig, axes = plt.subplots(len(cols_by_units.keys()))
+    fig, axes = plt.subplots(plotcount)
+
+    if plotcount == 1:
+        # turn axes into list if it wasnt already
+        axes = [axes]
+
     fig.suptitle("Logging data")
-    axes[len(cols_by_units.keys()) - 1].set_xlabel("Time [s]")
+    axes[plotcount - 1].set_xlabel("Time [s]")
     i = 0
     for unit in cols_by_units:
         for colname in cols_by_units[unit]:
