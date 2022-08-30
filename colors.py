@@ -3,8 +3,8 @@ class ColorFactory(object):
     curr_clr_index = 0
 
     @classmethod
-    def reset(self):
-        self.curr_clr_index = 0
+    def reset(cls):
+        cls.curr_clr_index = 0
 
     @classmethod
     def next(cls):
