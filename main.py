@@ -11,10 +11,13 @@ import pandas as pd
 from colors import ColorFactory
 from colfams import ColFamInfo
 
-# TODO
-# - parse booleans
-
 ENCODING = "iso-8859-1"
+
+"""Extracts the unit of the measurement from the column name"""
+def get_unit(colname: str) -> str:
+    start = colname.rfind('[') + 1
+    end = colname.rfind(']')
+    return colname[start:end]
 
 # interactively let the user choose which columns to select for drawing from a pandas frame
 def select_columns(df) -> list[str]:
@@ -76,6 +79,12 @@ def main():
     start_time = df['Timestamps'][0]
     df['Timestamps'] = df['Timestamps'].apply(lambda t: (t - start_time).seconds)
     df.drop(['Time', 'Date'], axis=1, inplace=True)
+
+    # parse boolean values
+    for name in df.columns:
+        unit = get_unit(name)
+        if unit == "Yes/No" or unit == "Ja/Nein":
+            df[name] = df[name].apply(lambda value: int(value == "Yes" or value == "Ja"))
     
     # select cols from file
     selected_cols = []
@@ -104,10 +113,7 @@ def main():
     # sort into units
     cols_by_units = {}
     for name in selected_cols:
-        start = name.rfind('[') + 1
-        end = name.rfind(']')
-        unit = name[start:end]
-
+        unit = get_unit(name)
         if not unit in cols_by_units:
             cols_by_units[unit] = []
         

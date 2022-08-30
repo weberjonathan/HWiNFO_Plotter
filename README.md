@@ -10,6 +10,4 @@ HWiNFO log files are expected to be encoded in ISO-8859-1 (Latin-1). The same en
 
 The default date format used to parse timestamps is `%d.%m.%Y %H:%M:%S`. Use `--format` to supply your own if this is not the date format in your HWiNFO log file.
 
-__TODO__ Parse boolean values (Ja/Nein, Yes/No) correctly
-
 ![example with multiple graphs and multiple series](/img/example.png)
