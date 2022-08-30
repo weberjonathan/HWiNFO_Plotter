@@ -1,16 +1,21 @@
-import argparse
-from datetime import datetime
-from matplotlib import pyplot as plt
+#!/usr/bin/env python
 
+"""Module to create graphs from HWiNFO logging data."""
+
+__author__ = "Jonathan Weber"
+__version__ = "0.1"
+
+import argparse
+from matplotlib import pyplot as plt
 import pandas as pd
-import numpy as np
 from colors import ColorFactory
 from colfams import ColFamInfo
 
 # TODO
-# - encodings
 # - parse booleans
 # - date formats
+
+ENCODING = "iso-8859-1"
 
 # interactively let the user choose which columns to select for drawing from a pandas frame
 def select_columns(df) -> list[str]:
@@ -56,7 +61,7 @@ def main():
     parser.add_argument("--layout", help="Specify a file that contains column names to draw the values from.", type=str)
     args = parser.parse_args()
 
-    df = pd.read_csv(args.logfile, header=0, encoding="iso8859_15") # parse ja/nein as 1,0
+    df = pd.read_csv(args.logfile, header=0, encoding=ENCODING) # parse ja/nein as 1,0
 
     # match column families to columns
     ColFamInfo.init(df)
@@ -76,7 +81,7 @@ def main():
     selected_cols = []
     if not args.layout == None:
         try:
-            with open(args.layout, "r", encoding="iso8859_15") as file:
+            with open(args.layout, "r", encoding=ENCODING) as file:
                 selected_cols = file.readlines()
                 for i in range(0, len(selected_cols)):
                     selected_cols[i] = selected_cols[i].replace("\n", "")
@@ -90,7 +95,7 @@ def main():
     # export selection if specified using cmd line arg
     if not args.export == None and args.layout == None:
         try:
-            with open(args.export, "w", encoding="iso8859_15") as file:
+            with open(args.export, "w", encoding=ENCODING) as file:
                 for colname in selected_cols:
                     file.write(colname + "\n")
         except IOError as e:
