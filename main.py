@@ -13,7 +13,6 @@ from colfams import ColFamInfo
 
 # TODO
 # - parse booleans
-# - date formats
 
 ENCODING = "iso-8859-1"
 
@@ -59,6 +58,7 @@ def main():
     parser.add_argument("logfile", help="HwInfo log file containing the data to draw from.")
     parser.add_argument("--export", help="Choose which values to draw and export the selection to a specified file. You can specify this selection later using the --layout option.", type=str)
     parser.add_argument("--layout", help="Specify a file that contains column names to draw the values from.", type=str)
+    parser.add_argument("--format", help="Date format of datetimes in HwInfo log file. Note that the columns 'Date' and 'Time' should be combined using a whitespace. Defaults to: '%%d.%%m.%%Y %%H:%%M:%%S'", default="%d.%m.%Y %H:%M:%S")
     args = parser.parse_args()
 
     df = pd.read_csv(args.logfile, header=0, encoding=ENCODING) # parse ja/nein as 1,0
@@ -72,7 +72,7 @@ def main():
     # compute timestamps relative to start of recording
     df['Time'] = df['Time'].replace("[.]\d*$", "", regex=True) # strip miliseconds
     df['Timestamps'] = df['Date'] + ' ' + df['Time']
-    df['Timestamps'] = pd.to_datetime(df['Timestamps'], dayfirst=True)
+    df['Timestamps'] = pd.to_datetime(df['Timestamps'], format=args.format)
     start_time = df['Timestamps'][0]
     df['Timestamps'] = df['Timestamps'].apply(lambda t: (t - start_time).seconds)
     df.drop(['Time', 'Date'], axis=1, inplace=True)
