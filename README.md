@@ -11,6 +11,8 @@ __Example:__
 python -m main --layout example_layout.txt example_data.csv
 `
 
+__Requirements (pip):__ matplotlib, pandas
+
 HWiNFO log files are expected to be encoded in ISO-8859-1 (Latin-1). The same encoding is used for `layout.txt` files created by this script. Tested in German and English.
 
 The default date format used to parse timestamps is `%d.%m.%Y %H:%M:%S`. Use `--format` to supply your own if this is not the date format in your HWiNFO log file.
