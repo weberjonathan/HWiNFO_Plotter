@@ -1,3 +1,0 @@
-Maximale CPU-/Thread-Auslastung [%]
-GPU-Kernlast [%]
-Rahmenzeit [ms]
