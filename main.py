@@ -6,6 +6,7 @@ __author__ = "Jonathan Weber"
 __version__ = "0.1"
 
 import argparse
+import os
 from matplotlib import pyplot as plt
 import pandas as pd
 from colors import ColorFactory
@@ -103,6 +104,12 @@ def main():
 
     # export selection if specified using cmd line arg
     if not args.export == None and args.layout == None:
+        head, tail = os.path.split(args.export)
+        if (not head == "") and (not os.path.exists(head)):
+            os.makedirs(head)
+
+        # TODO prompt for override if tail exists
+
         try:
             with open(args.export, "w", encoding=ENCODING) as file:
                 for colname in selected_cols:
